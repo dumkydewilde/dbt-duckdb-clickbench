@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv/
+venv/
+env/
+.uv/
+.user.yml
+data/
+dbt_packages/
+
+# Distribution / packaging
+*.egg-info/
+.dist/
+build/
+dist/
+
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# DuckDB files
+*.duckdb
+*.duckdb.wal
+
+# Misc
+*.log

@@ -1,0 +1,7 @@
+models:
+    - name: stg_clickbench__hits
+      config:
+        event_time: event_time
+    - name: stg_clickbench__hits_vw
+      config:
+        event_time: event_time

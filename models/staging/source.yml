@@ -1,0 +1,6 @@
+sources:
+    -   name: clickbench
+        meta: 
+            external_location: "read_parquet('https://datasets.clickhouse.com/hits_compatible/hits.parquet', binary_as_string=True)"
+        tables:
+            - name: hits

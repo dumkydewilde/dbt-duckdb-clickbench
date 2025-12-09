@@ -1,0 +1,17 @@
+[project]
+name = "dbt-duckdb-clickbench"
+version = "0.1.0"
+description = "Minimal dbt-duckdb project for benchmarking"
+requires-python = "==3.13.*" # dbt does not support 3.14 yet
+dependencies = [
+    "dbt-duckdb>=1.8.2",
+]
+readme = "README.md"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "W"]
+
+[tool.uv.sources]
+dbt-duckdb = { git = "https://github.com/gfrmin/dbt-duckdb", branch = "microbatch" }

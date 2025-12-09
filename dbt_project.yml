@@ -1,0 +1,32 @@
+name: duckdb_clickbench
+version: 1.0.0
+config-version: 2
+profile: duckdb_clickbench
+
+model-paths:
+  - models
+macro-paths:
+  - macros
+seed-paths:
+  - data
+analysis-paths:
+  - analyses
+snapshot-paths:
+  - snapshots
+test-paths:
+  - tests
+target-path: target
+clean-targets:
+  - target
+  - dbt_packages
+
+vars:
+  data_start_date: '2013-07-02'
+  data_end_date: '2013-07-31'
+
+models:
+  duckdb_clickbench:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: incremental
