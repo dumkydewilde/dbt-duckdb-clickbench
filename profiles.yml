@@ -1,7 +1,7 @@
 duckdb_clickbench:
-  target: dev
+  target: default
   outputs:
-    dev:
+    default:
       type: duckdb
       path: data/clickbench.duckdb
       schema: main
@@ -14,3 +14,41 @@ duckdb_clickbench:
         memory_limit: '8GB'
         preserve_insertion_order: false
 
+    clickbench_2GB:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 1
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '2GB'
+        preserve_insertion_order: false
+
+    clickbench_8GB:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 1
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '8GB'
+        preserve_insertion_order: false
+
+    clickbench_24GB:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 1
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '24GB'
+        preserve_insertion_order: false

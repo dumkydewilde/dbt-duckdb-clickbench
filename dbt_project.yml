@@ -30,3 +30,9 @@ models:
       +materialized: view
     marts:
       +materialized: incremental
+
+  dbt_artifacts:
+    +schema: dbt_artifacts
+
+on-run-end:
+  - "{{ dbt_artifacts.upload_results(results) }}"

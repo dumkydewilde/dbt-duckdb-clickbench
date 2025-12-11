@@ -7,10 +7,10 @@ Minimal dbt project to benchmark the DuckDB adapter / dbt models against the Cli
 The staging source defined in `models/staging/source.yml` points DuckDB at the public ClickBench export:
 
 ```text
-read_parquet('https://datasets.clickhouse.com/hits_compatible/hits.parquet', binary_as_string=True)
+read_parquet('https://datasets.clickhouse.com/hits_compatible/hits.parquet', binary_as_string=True) -- 14GB!
 ```
 
-By default the `stg_clickbench__hits` model streams directly from this remote Parquet file and materializes as a table, so you can run the benchmarks immediately without re-downloading. If you prefer to store the file locally (for repeatable offline runs from Parquet or to avoid re-downloading ~10 GB), you can download it once and adjust the source to point at your local copy. Update `models/staging/source.yml` so the `external_location` points to `read_parquet('data/clickbench/hits.parquet')` instead of the remote URL.
+By default the `stg_clickbench__hits` model streams directly from this remote Parquet file and materializes as a table, so you can run the benchmarks immediately without re-downloading. If you prefer to store the file locally (for repeatable offline runs from Parquet or to avoid re-downloading ~14 GB), you can download it once and adjust the source to point at your local copy. Update `models/staging/source.yml` so the `external_location` points to `read_parquet('data/clickbench/hits.parquet')` instead of the remote URL.
 
 ## Running the benchmarks via Make
 
