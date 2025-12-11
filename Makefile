@@ -23,6 +23,11 @@ clickbench:
 		echo "Running clickbench profile $$target"; \
 		uv run dbt run -s marts.clickbench --full-refresh --target $$target || exit $$?; \
 	done
+	echo "\n\nRESULTS:"
+	uv run dbt show -q -s benchmarks.clickbench
+
+results:
+	uv run dbt show -q -s benchmarks.clickbench
 
 microbatch:
 	uv run dbt run -s normal_incremental --full-refresh
