@@ -6,6 +6,28 @@ Minimal dbt project to benchmark the DuckDB adapter / dbt models against the Cli
 
 1. Run `make setup` (downloads 14GB dataset)
 2. `make clickbench` or `make incremental` to run different benchmarks
+3. View the results in your terminal, e.g.
+
+| target_name     | total_runtime_s | models_executed |
+| --------------- | --------------- | --------------- |
+| clickbench_8GB  |         35.905… |              43 |
+| clickbench_24GB |         38.348… |              43 |
+| clickbench_2GB  |         55.512… |              43 |
+
+| model_name           | model_status    | model_runtime_s |
+| -------------------- | --------------- | --------------- |
+| microbatch_date_p... | error           |          4.917… |
+| table                | success         |         50.121… |
+| microbatch_ukey_d... | partial success |         58.288… |
+| microbatch_ukey      | partial success |         66.825… |
+| incremental__del_... | success         |        101.014… |
+| incremental__del_... | success         |        104.659… |
+| microbatch_default   | success         |        106.800… |
+| incremental__del_... | success         |        108.483… |
+| incremental__del_... | success         |        115.144… |
+| incremental__merg... | error           |        117.395… |
+| incremental__merge   | error           |        117.522… |
+| incremental__merg... | error           |        119.890… |
 
 ## ClickBench dataset
 
