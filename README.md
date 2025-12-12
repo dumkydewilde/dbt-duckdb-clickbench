@@ -2,6 +2,11 @@
 
 Minimal dbt project to benchmark the DuckDB adapter / dbt models against the ClickBench dataset. The sections below explain where the raw data comes from, how to drive the benchmark runs via `make`, and how to pin specific `dbt-duckdb` builds.
 
+## TLDR;
+
+1. Run `make setup` (downloads 14GB dataset)
+2. `make clickbench` or `make microbatch` to run different benchmarks
+
 ## ClickBench dataset
 
 The staging source defined in `models/staging/source.yml` points DuckDB at the public ClickBench export:

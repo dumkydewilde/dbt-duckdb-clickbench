@@ -2,10 +2,11 @@
     config(
         materialized='incremental',
         incremental_strategy='microbatch',
-        
+        unique_key='event_date',
         event_time='event_time',
+        concurrent_batches=false,
         batch_size='day',
-        lookback=1,
+        lookback=0,
         begin='2013-07-01',
         full_refresh=false
     )

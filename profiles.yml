@@ -52,3 +52,16 @@ duckdb_clickbench:
         parquet_metadata_cache: true
         memory_limit: '24GB'
         preserve_insertion_order: false
+
+    microbatch_default:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 1
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '8GB'
+        preserve_insertion_order: false

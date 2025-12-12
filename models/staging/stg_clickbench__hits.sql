@@ -25,6 +25,15 @@ select
     windowclientwidth as window_client_width,
     windowclientheight as window_client_height,
     clientip as client_ip,
-    watchid as watch_id
+    watchid as watch_id,
+
+        -- deterministic key for deduplicating hits across sources
+    md5(
+        coalesce(cast(watchid as varchar), '') || '|' ||
+        coalesce(cast(eventtime as varchar), '') || '|' ||
+        coalesce(cast(counterid as varchar), '') || '|' ||
+        coalesce(cast(clientip as varchar), '') || '|' ||
+        coalesce(cast(userid as varchar), '')
+    ) as hash_key,    
 
 from {{ source('clickbench', 'hits') }}

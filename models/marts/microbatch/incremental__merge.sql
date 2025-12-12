@@ -2,8 +2,9 @@
     config(
         description="Microbatch incremental model for clickbench hits data. Simulates re-processing data for specific event dates compared to microbatch strategy.",
         materialized='incremental',
-        incremental_strategy='delete+insert',
-        unique_key='event_date'
+        incremental_strategy='merge',
+        unique_key='hash_key',
+        tags=['microbatch_incremental']
     )
 }}
 
