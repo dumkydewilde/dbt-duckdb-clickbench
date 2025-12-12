@@ -5,7 +5,7 @@ Minimal dbt project to benchmark the DuckDB adapter / dbt models against the Cli
 ## TLDR;
 
 1. Run `make setup` (downloads 14GB dataset)
-2. `make clickbench` or `make microbatch` to run different benchmarks
+2. `make clickbench` or `make incremental` to run different benchmarks
 
 ## ClickBench dataset
 
@@ -27,7 +27,7 @@ All benchmark entry points live in the root `Makefile` so you do not have to rem
 
 ## Pinning `dbt-duckdb` versions
 
-`pyproject.toml` currently pulls a specific dbt-duckdb adapter with microbatch implementation (see: https://github.com/duckdb/dbt-duckdb/pull/644)
+`pyproject.toml` currently pulls a specific dbt-duckdb adapter with microbatch implementation (see: [https://github.com/duckdb/dbt-duckdb/pull/644](PR #644))
 
 ```toml
 [project]
@@ -53,7 +53,7 @@ You have two knobs for testing other adapter builds:
 
     ```toml
     [tool.uv.sources]
-    dbt-duckdb = { git = "https://github.com/dbt-labs/dbt-duckdb", rev = "1c0ffee" }
+    dbt-duckdb = { git = "https://github.com/duckdb/dbt-duckdb", rev = "1c0ffee" }
     ```
 
 After changing either value, run `uv sync` so the lockfile and virtual environment pick up the new adapter. Subsequent `make` targets will automatically use whatever version `uv` just installed.

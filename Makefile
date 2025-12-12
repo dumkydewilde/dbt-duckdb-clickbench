@@ -26,19 +26,32 @@ clickbench:
 	echo "\n\nRESULTS:"
 	uv run dbt show -q -s results.results__clickbench
 
-microbatch:
-	# Initial full-refresh to create the base table for incremental models
+incremental:
+	### Initial full-refresh to create the base tables for testing incremental models
+
 	uv run dbt run -s tag:microbatch_incremental --full-refresh --target microbatch_default
 	
-	# Microbatch incremental run for July 2013 data
+	### Benchmarking regular (full-refresh) table
 	- uv run dbt run -s table --target microbatch_default
-	- uv run dbt run -s incremental__del_ins_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
-	- uv run dbt run -s incremental__del_ins_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
-	- uv run dbt run -s incremental__merge --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
+
+	### Benchmarking incremental models with different strategies
+	- uv run dbt run -s incremental__del_ins_date_partition --target microbatch_default
+	- uv run dbt run -s incremental__del_ins_ukey_date --target microbatch_default
+	- uv run dbt run -s incremental__del_ins_ukey --target microbatch_default
+	- uv run dbt run -s incremental__merge_ukey_date --target microbatch_default
+	- uv run dbt run -s incremental__merge_update_columns --target microbatch_default
+	- uv run dbt run -s incremental__merge --target microbatch_default
+
+	### Simulating microbatch re-processing for event dates July 1-31, 2013
+	- uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
 	- uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
 	- uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
 	- uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
+	
+	### Results:
 	uv run dbt show -q -s results.results__microbatch --limit 20
+
+microbatch: incremental
 
 results:
 	uv run dbt show -q -s results.results__clickbench  --limit 20
