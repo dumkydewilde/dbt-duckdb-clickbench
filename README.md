@@ -27,7 +27,7 @@ All benchmark entry points live in the root `Makefile` so you do not have to rem
 
 ## Pinning `dbt-duckdb` versions
 
-`pyproject.toml` currently pulls a specific dbt-duckdb adapter with microbatch implementation (see: [https://github.com/duckdb/dbt-duckdb/pull/644](PR #644))
+`pyproject.toml` currently pulls a specific dbt-duckdb adapter with microbatch implementation (see: [PR #644](https://github.com/duckdb/dbt-duckdb/pull/644))
 
 ```toml
 [project]
