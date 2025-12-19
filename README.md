@@ -14,20 +14,24 @@ Minimal dbt project to benchmark the DuckDB adapter / dbt models against the Cli
 | clickbench_24GB |         38.348… |              43 |
 | clickbench_2GB  |         55.512… |              43 |
 
-| model_name           | model_status    | model_runtime_s |
-| -------------------- | --------------- | --------------- |
-| microbatch_date_p... | error           |          4.917… |
-| table                | success         |         50.121… |
-| microbatch_ukey_d... | partial success |         58.288… |
-| microbatch_ukey      | partial success |         66.825… |
-| incremental__del_... | success         |        101.014… |
-| incremental__del_... | success         |        104.659… |
-| microbatch_default   | success         |        106.800… |
-| incremental__del_... | success         |        108.483… |
-| incremental__del_... | success         |        115.144… |
-| incremental__merg... | error           |        117.395… |
-| incremental__merge   | error           |        117.522… |
-| incremental__merg... | error           |        119.890… |
+|             model_name              |        target_name        |  model_status   | model_runtime_s |
+| ---------------------------------- | ------------------------- | --------------- | ---------------- |
+| table                               | incremental_multi_thread  | success         |       25.070116 |
+| incremental__del_ins_date_partition | incremental_multi_thread  | success         |        81.30077 |
+| incremental__del_ins_ukey_date      | incremental_multi_thread  | success         |        87.08315 |
+| incremental__del_ins_ukey           | incremental_multi_thread  | success         |         93.9573 |
+| microbatch_default                  | incremental_single_thread | success         |       204.85132 |
+| microbatch_ukey                     | incremental_multi_thread  | partial success |        87.09769 |
+| microbatch_default_concurrent       | incremental_multi_thread  | partial success |        93.76382 |
+| microbatch_default                  | incremental_multi_thread  | partial success |       95.302986 |
+| microbatch_ukey_date_partition      | incremental_multi_thread  | partial success |        101.5172 |
+| microbatch_ukey                     | incremental_single_thread | partial success |        220.9444 |
+| microbatch_ukey_date_partition      | incremental_single_thread | error           |        1.297792 |
+| microbatch_date_partition           | incremental_multi_thread  | error           |        9.356611 |
+| microbatch_date_partition           | incremental_single_thread | error           |       13.908075 |
+| incremental__merge                  | incremental_multi_thread  | error           |      103.943726 |
+| incremental__merge_update_columns   | incremental_multi_thread  | error           |       109.29556 |
+| incremental__merge_ukey_date        | incremental_multi_thread  | error           |       114.55945 |
 
 ## ClickBench dataset
 
