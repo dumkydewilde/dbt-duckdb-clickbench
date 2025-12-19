@@ -28,7 +28,7 @@ models:
   duckdb_clickbench:
     staging:
       +materialized: view
-    marts:
+    benchmarks:
       +materialized: incremental
 
   dbt_artifacts:
