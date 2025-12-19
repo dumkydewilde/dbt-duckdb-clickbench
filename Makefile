@@ -12,6 +12,7 @@ setup:
 	uv run dbt deps
 	uv run dbt run -s dbt_artifacts
 	uv run dbt run -s staging
+	uv run dbt run -s results --empty
 
 clickbench:
 	@targets="$$($(CLICKBENCH_TARGETS_CMD))"; \
@@ -21,7 +22,7 @@ clickbench:
 	fi; \
 	for target in $$targets; do \
 		echo "Running clickbench profile $$target"; \
-		uv run dbt run -s marts.clickbench --full-refresh --target $$target || exit $$?; \
+		uv run dbt run -s benchmarks.clickbench --full-refresh --target $$target || exit $$?; \
 	done
 	echo "\n\nRESULTS:"
 	uv run dbt show -q -s results.results__clickbench
@@ -29,31 +30,31 @@ clickbench:
 incremental:
 	### Initial full-refresh to create the base tables for testing incremental models
 
-	uv run dbt run -s tag:microbatch_incremental --full-refresh --target microbatch_default
+	uv run dbt run -s tag:microbatch_incremental --full-refresh --target incremental_multi_thread
 	
 	### Benchmarking regular (full-refresh) table
-	- uv run dbt run -s table --target microbatch_default
+	- uv run dbt run -s table --target incremental_multi_thread
 
 	### Benchmarking incremental models with different strategies
-	- uv run dbt run -s incremental__del_ins_date_partition --target microbatch_default
-	- uv run dbt run -s incremental__del_ins_ukey_date --target microbatch_default
-	- uv run dbt run -s incremental__del_ins_ukey --target microbatch_default
-	- uv run dbt run -s incremental__merge_ukey_date --target microbatch_default
-	- uv run dbt run -s incremental__merge_update_columns --target microbatch_default
-	- uv run dbt run -s incremental__merge --target microbatch_default
+	- uv run dbt run -s incremental__del_ins_date_partition --target incremental_multi_thread
+	- uv run dbt run -s incremental__del_ins_ukey_date --target incremental_multi_thread
+	- uv run dbt run -s incremental__del_ins_ukey --target incremental_multi_thread
+	- uv run dbt run -s incremental__merge_ukey_date --target incremental_multi_thread
+	- uv run dbt run -s incremental__merge_update_columns --target incremental_multi_thread
+	- uv run dbt run -s incremental__merge --target incremental_multi_thread
 
 	### Simulating microbatch re-processing for event dates July 1-31, 2013
-	- uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
-	- uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
-	- uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
-	- uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target microbatch_default
+	- uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
+	- uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
+	- uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
+	- uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
 	
 	### Results:
-	uv run dbt show -q -s results.results__microbatch --limit 20
+	duckdb data/clickbench.duckdb -c "select * from main.results__incremental limit 20"
 
 microbatch: incremental
 
 results:
 	uv run dbt show -q -s results.results__clickbench  --limit 20
 
-	uv run dbt show -q -s results.results__microbatch  --limit 20
+	duckdb data/clickbench.duckdb -c "select * from main.results__incremental limit 20"

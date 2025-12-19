@@ -14,5 +14,5 @@ line-length = 100
 select = ["E", "F", "W"]
 
 [tool.uv.sources]
-dbt-duckdb = { git = "https://github.com/gfrmin/dbt-duckdb", branch = "microbatch" }
-# dbt-duckdb = { path = "/Users/username/code/dbt-duckdb-1/", package = true }
+# dbt-duckdb = { git = "https://github.com/gfrmin/dbt-duckdb", branch = "microbatch" }
+dbt-duckdb = { path = "/Users/dumkydewilde/code/dbt-duckdb-1/", package = true }

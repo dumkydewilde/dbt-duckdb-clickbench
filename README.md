@@ -75,7 +75,10 @@ You have two knobs for testing other adapter builds:
 
     ```toml
     [tool.uv.sources]
+    # either
     dbt-duckdb = { git = "https://github.com/duckdb/dbt-duckdb", rev = "1c0ffee" }
+    # or
+    dbt-duckdb = { path = "/Users/username/code/dbt-duckdb-from-me/", package = true }
     ```
 
 After changing either value, run `uv sync` so the lockfile and virtual environment pick up the new adapter. Subsequent `make` targets will automatically use whatever version `uv` just installed.
