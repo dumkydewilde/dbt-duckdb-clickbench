@@ -5,6 +5,13 @@ CLICKBENCH_PREFIX := clickbench_
 # Command that lists every duckdb_clickbench output beginning with clickbench_
 CLICKBENCH_TARGETS_CMD := uv run python -c "import pathlib, yaml; path = pathlib.Path('profiles.yml'); data = yaml.safe_load(path.read_text()) if path.exists() else {}; data = data or {}; profile = data.get('$(DBT_PROJECT)', {}); outputs = profile.get('outputs', {}); matches = [name for name in outputs if name.startswith('$(CLICKBENCH_PREFIX)')]; print(' '.join(matches))"
 
+INCREMENTAL_TARGETS := \
+	incremental_single_thread_8GB \
+	incremental_single_thread_16GB \
+	incremental_multi_thread_3_8GB \
+	incremental_multi_thread_3_16GB \
+	incremental_multi_thread_8_8GB
+
 setup:
 	mkdir -p data
 	uv sync
@@ -29,25 +36,27 @@ clickbench:
 
 incremental:
 	### Initial full-refresh to create the base tables for testing incremental models
-
-	uv run dbt run -s tag:microbatch_incremental --full-refresh --target incremental_multi_thread
-	
-	### Benchmarking regular (full-refresh) table
-	- uv run dbt run -s table --target incremental_multi_thread
-
-	### Benchmarking incremental models with different strategies
-	- uv run dbt run -s incremental__del_ins_date_partition --target incremental_multi_thread
-	- uv run dbt run -s incremental__del_ins_ukey_date --target incremental_multi_thread
-	- uv run dbt run -s incremental__del_ins_ukey --target incremental_multi_thread
-	- uv run dbt run -s incremental__merge_ukey_date --target incremental_multi_thread
-	- uv run dbt run -s incremental__merge_update_columns --target incremental_multi_thread
-	- uv run dbt run -s incremental__merge --target incremental_multi_thread
-
-	### Simulating microbatch re-processing for event dates July 1-31, 2013
-	- uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
-	- uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
-	- uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
-	- uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target incremental_multi_thread
+	@for target in $(INCREMENTAL_TARGETS); do \
+		echo "Running incremental benchmarks for profile $$target"; \
+		uv run dbt run -s tag:microbatch_incremental --full-refresh --target $$target --threads 8 || true; \
+		\
+		echo "  Benchmarking regular (full-refresh) table"; \
+		uv run dbt run -s table --target $$target || true; \
+		\
+		echo "  Benchmarking incremental models with different strategies"; \
+		uv run dbt run -s incremental__del_ins_date_partition --target $$target || true; \
+		uv run dbt run -s incremental__del_ins_ukey_date --target $$target || true; \
+		uv run dbt run -s incremental__del_ins_ukey --target $$target || true; \
+		uv run dbt run -s incremental__merge_ukey_date --target $$target || true; \
+		uv run dbt run -s incremental__merge_update_columns --target $$target || true; \
+		uv run dbt run -s incremental__merge --target $$target || true; \
+		\
+		echo "  Simulating microbatch re-processing for event dates July 1-31, 2013"; \
+		uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
+		uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
+		uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
+		uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
+	done
 	
 	### Results:
 	duckdb data/clickbench.duckdb -c "select * from main.results__incremental limit 20"
@@ -57,4 +66,4 @@ microbatch: incremental
 results:
 	uv run dbt show -q -s results.results__clickbench  --limit 20
 
-	duckdb data/clickbench.duckdb -c "select * from main.results__incremental limit 20"
+	duckdb data/clickbench.duckdb -c "select * from main.results__incremental limit 30"

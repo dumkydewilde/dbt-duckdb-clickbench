@@ -53,7 +53,7 @@ duckdb_clickbench:
         memory_limit: '24GB'
         preserve_insertion_order: false
 
-    incremental_single_thread:
+    incremental_single_thread_8GB:
       type: duckdb
       path: data/clickbench.duckdb
       schema: main
@@ -67,11 +67,11 @@ duckdb_clickbench:
         preserve_insertion_order: false
         threads: 1
 
-    incremental_multi_thread:
+    incremental_single_thread_16GB:
       type: duckdb
       path: data/clickbench.duckdb
       schema: main
-      threads: 16
+      threads: 1
       extensions:
         - parquet
         - httpfs
@@ -79,3 +79,45 @@ duckdb_clickbench:
         parquet_metadata_cache: true
         memory_limit: '8GB'
         preserve_insertion_order: false
+        threads: 1
+
+    incremental_multi_thread_3_8GB:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 3
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '8GB'
+        preserve_insertion_order: false
+
+    incremental_multi_thread_3_16GB:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 3
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '8GB'
+        preserve_insertion_order: false
+
+    incremental_multi_thread_8_8GB:
+      type: duckdb
+      path: data/clickbench.duckdb
+      schema: main
+      threads: 8
+      extensions:
+        - parquet
+        - httpfs
+      settings:
+        parquet_metadata_cache: true
+        memory_limit: '8GB'
+        preserve_insertion_order: false
+
+        
