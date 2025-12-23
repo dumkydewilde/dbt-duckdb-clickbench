@@ -15,7 +15,7 @@ Minimal dbt project to benchmark the DuckDB adapter / dbt models against the Cli
 | clickbench_2GB  |         55.512… |              43 |
 
 |             model_name              |          target_name            | model_runtime_s |  
-├-------------------------------------┼--------------------------------┼--------------┼
+|-------------------------------------|--------------------------------|-------------|
 | table                               | incremental_multi_thread_8_8GB |       26.692926 | 
 | table                               | incremental_multi_thread_3_8GB |         33.4093 | 
 | microbatch_event_date_col           | incremental_multi_thread_3_8GB |        60.26188 | 
