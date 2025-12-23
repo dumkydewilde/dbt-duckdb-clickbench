@@ -4,7 +4,8 @@ version = "0.1.0"
 description = "Minimal dbt-duckdb project for benchmarking"
 requires-python = "==3.13.*" # dbt does not support 3.14 yet
 dependencies = [
-    "dbt-duckdb>=1.8.2",
+    "dbt-core>=1.9.0",
+    "dbt-duckdb",
 ]
 readme = "README.md"
 
@@ -14,5 +15,5 @@ line-length = 100
 select = ["E", "F", "W"]
 
 [tool.uv.sources]
-# dbt-duckdb = { git = "https://github.com/gfrmin/dbt-duckdb", branch = "microbatch" }
-dbt-duckdb = { path = "/Users/dumkydewilde/code/dbt-duckdb-1/", package = true }
+dbt-duckdb = { git = "https://github.com/dumkydewilde/dbt-duckdb", branch = "microbatch-alternative" }
+# dbt-duckdb = { path = "/Users/your_name/code/dbt-duckdb/", package = true } # uv sync --reinstall-package dbt-duckdb  

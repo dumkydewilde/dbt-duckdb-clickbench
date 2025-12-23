@@ -7,10 +7,11 @@ CLICKBENCH_TARGETS_CMD := uv run python -c "import pathlib, yaml; path = pathlib
 
 INCREMENTAL_TARGETS := \
 	incremental_single_thread_8GB \
-	incremental_single_thread_16GB \
 	incremental_multi_thread_3_8GB \
+	incremental_multi_thread_8_8GB \
+	incremental_single_thread_16GB \
 	incremental_multi_thread_3_16GB \
-	incremental_multi_thread_8_8GB
+	
 
 setup:
 	mkdir -p data
@@ -38,24 +39,24 @@ incremental:
 	### Initial full-refresh to create the base tables for testing incremental models
 	@for target in $(INCREMENTAL_TARGETS); do \
 		echo "Running incremental benchmarks for profile $$target"; \
-		uv run dbt run -s tag:microbatch_incremental --full-refresh --target $$target --threads 8 || true; \
+		uv run dbt run -s tag:microbatch_incremental --full-refresh --target $$target --threads 8; \
 		\
 		echo "  Benchmarking regular (full-refresh) table"; \
-		uv run dbt run -s table --target $$target || true; \
+		uv run dbt run -s table --target $$target; \
 		\
 		echo "  Benchmarking incremental models with different strategies"; \
-		uv run dbt run -s incremental__del_ins_date_partition --target $$target || true; \
-		uv run dbt run -s incremental__del_ins_ukey_date --target $$target || true; \
-		uv run dbt run -s incremental__del_ins_ukey --target $$target || true; \
-		uv run dbt run -s incremental__merge_ukey_date --target $$target || true; \
-		uv run dbt run -s incremental__merge_update_columns --target $$target || true; \
-		uv run dbt run -s incremental__merge --target $$target || true; \
+		uv run dbt run -s incremental__del_ins_date_partition --target $$target; \
+		uv run dbt run -s incremental__del_ins_ukey_date --target $$target; \
+		uv run dbt run -s incremental__del_ins_ukey --target $$target; \
+		uv run dbt run -s incremental__merge_ukey_date --target $$target; \
+		uv run dbt run -s incremental__merge_update_columns --target $$target; \
+		uv run dbt run -s incremental__merge --target $$target; \
 		\
 		echo "  Simulating microbatch re-processing for event dates July 1-31, 2013"; \
-		uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
-		uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
-		uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
-		uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target || true; \
+		uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
+		uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
+		uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
+		uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
 	done
 	
 	### Results:
@@ -64,6 +65,7 @@ incremental:
 microbatch: incremental
 
 results:
+	uv run dbt run -q -s results
 	uv run dbt show -q -s results.results__clickbench  --limit 20
 
 	duckdb data/clickbench.duckdb -c "select * from main.results__incremental limit 30"
