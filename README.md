@@ -14,24 +14,33 @@ Minimal dbt project to benchmark the DuckDB adapter / dbt models against the Cli
 | clickbench_24GB |         38.348… |              43 |
 | clickbench_2GB  |         55.512… |              43 |
 
-|             model_name              |        target_name        |  model_status   | model_runtime_s |
-| ---------------------------------- | ------------------------- | --------------- | ---------------- |
-| table                               | incremental_multi_thread  | success         |       25.070116 |
-| incremental__del_ins_date_partition | incremental_multi_thread  | success         |        81.30077 |
-| incremental__del_ins_ukey_date      | incremental_multi_thread  | success         |        87.08315 |
-| incremental__del_ins_ukey           | incremental_multi_thread  | success         |         93.9573 |
-| microbatch_default                  | incremental_single_thread | success         |       204.85132 |
-| microbatch_ukey                     | incremental_multi_thread  | partial success |        87.09769 |
-| microbatch_default_concurrent       | incremental_multi_thread  | partial success |        93.76382 |
-| microbatch_default                  | incremental_multi_thread  | partial success |       95.302986 |
-| microbatch_ukey_date_partition      | incremental_multi_thread  | partial success |        101.5172 |
-| microbatch_ukey                     | incremental_single_thread | partial success |        220.9444 |
-| microbatch_ukey_date_partition      | incremental_single_thread | error           |        1.297792 |
-| microbatch_date_partition           | incremental_multi_thread  | error           |        9.356611 |
-| microbatch_date_partition           | incremental_single_thread | error           |       13.908075 |
-| incremental__merge                  | incremental_multi_thread  | error           |      103.943726 |
-| incremental__merge_update_columns   | incremental_multi_thread  | error           |       109.29556 |
-| incremental__merge_ukey_date        | incremental_multi_thread  | error           |       114.55945 |
+|             model_name              |          target_name            | model_runtime_s |  
+├-------------------------------------┼--------------------------------┼--------------┼
+| table                               | incremental_multi_thread_8_8GB |       26.692926 | 
+| table                               | incremental_multi_thread_3_8GB |         33.4093 | 
+| microbatch_event_date_col           | incremental_multi_thread_3_8GB |        60.26188 | 
+| microbatch_ukey                     | incremental_multi_thread_8_8GB |        75.95332 | 
+| microbatch_default                  | incremental_multi_thread_8_8GB |        76.62632 | 
+| incremental__del_ins_date_partition | incremental_multi_thread_8_8GB |       77.524574 | 
+| microbatch_ukey_date_partition      | incremental_multi_thread_3_8GB |       79.064766 | 
+| microbatch_ukey                     | incremental_multi_thread_3_8GB |        79.11033 | 
+| incremental__del_ins_ukey_date      | incremental_multi_thread_8_8GB |        80.00094 | 
+| microbatch_date_partition           | incremental_multi_thread_8_8GB |        80.69873 | 
+| microbatch_ukey_date_partition      | incremental_multi_thread_8_8GB |        81.39617 | 
+| microbatch_default                  | incremental_multi_thread_3_8GB |        85.59948 | 
+| incremental__del_ins_date_partition | incremental_multi_thread_3_8GB |       87.599686 | 
+| microbatch_date_partition           | incremental_multi_thread_3_8GB |        90.62669 | 
+| incremental__del_ins_ukey_date      | incremental_multi_thread_3_8GB |      118.220695 | 
+| incremental__del_ins_ukey           | incremental_multi_thread_8_8GB |       120.06944 | 
+| incremental__del_ins_ukey           | incremental_multi_thread_3_8GB |       124.26179 | 
+| table                               | incremental_single_thread_8GB  |       127.54384 | 
+| microbatch_default                  | incremental_single_thread_8GB  |       182.72571 | 
+| microbatch_ukey_date_partition      | incremental_single_thread_8GB  |       182.82524 | 
+| microbatch_ukey                     | incremental_single_thread_8GB  |         185.796 | 
+| microbatch_date_partition           | incremental_single_thread_8GB  |       205.63583 | 
+| incremental__del_ins_date_partition | incremental_single_thread_8GB  |       245.33249 | 
+| incremental__del_ins_ukey           | incremental_single_thread_8GB  |        324.3013 | 
+| incremental__del_ins_ukey_date      | incremental_single_thread_8GB  |       327.11945 | 
 
 ## ClickBench dataset
 
