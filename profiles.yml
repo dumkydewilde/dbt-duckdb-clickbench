@@ -77,7 +77,7 @@ duckdb_clickbench:
         - httpfs
       settings:
         parquet_metadata_cache: true
-        memory_limit: '8GB'
+        memory_limit: '16GB'
         preserve_insertion_order: false
         threads: 1
 
@@ -104,7 +104,7 @@ duckdb_clickbench:
         - httpfs
       settings:
         parquet_metadata_cache: true
-        memory_limit: '8GB'
+        memory_limit: '16GB'
         preserve_insertion_order: false
 
     incremental_multi_thread_8_8GB:

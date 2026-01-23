@@ -188,26 +188,14 @@ wheels = [
 
 [[package]]
 name = "dbt-duckdb"
-version = "1.10.17"
-source = { directory = "../dbt-duckdb-1" }
+version = "1.10.1.dev20"
+source = { git = "https://github.com/duckdb/dbt-duckdb#a8b9fd4e7963464bd24d0f9595070daa5a2bcadd" }
 dependencies = [
     { name = "dbt-adapters" },
     { name = "dbt-common" },
     { name = "dbt-core" },
     { name = "duckdb" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "boto3", marker = "extra == 'glue'" },
-    { name = "dbt-adapters", specifier = ">=1,<2" },
-    { name = "dbt-common", specifier = ">=1,<2" },
-    { name = "dbt-core", specifier = ">=1.8.0" },
-    { name = "duckdb", specifier = ">=1.0.0" },
-    { name = "duckdb", marker = "extra == 'md'", specifier = "==1.4.1" },
-    { name = "mypy-boto3-glue", marker = "extra == 'glue'" },
-]
-provides-extras = ["glue", "md"]
 
 [[package]]
 name = "dbt-duckdb-clickbench"
@@ -221,7 +209,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "dbt-core", specifier = ">=1.9.0" },
-    { name = "dbt-duckdb", directory = "../dbt-duckdb-1" },
+    { name = "dbt-duckdb", git = "https://github.com/duckdb/dbt-duckdb" },
 ]
 
 [[package]]

@@ -9,8 +9,7 @@ INCREMENTAL_TARGETS := \
 	incremental_single_thread_8GB \
 	incremental_multi_thread_3_8GB \
 	incremental_multi_thread_8_8GB \
-	incremental_single_thread_16GB \
-	incremental_multi_thread_3_16GB \
+	incremental_single_thread_16GB
 	
 
 setup:
@@ -53,10 +52,7 @@ incremental:
 		uv run dbt run -s incremental__merge --target $$target; \
 		\
 		echo "  Simulating microbatch re-processing for event dates July 1-31, 2013"; \
-		uv run dbt run -s microbatch_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
-		uv run dbt run -s microbatch_default --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
-		uv run dbt run -s microbatch_ukey_date_partition --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
-		uv run dbt run -s microbatch_ukey --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
+		uv run dbt run -s microbatch_default_concurrent --event-time-start "2013-07-01" --event-time-end "2013-07-31" --target $$target; \
 	done
 	
 	### Results:

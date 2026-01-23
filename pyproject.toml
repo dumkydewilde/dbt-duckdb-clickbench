@@ -15,5 +15,4 @@ line-length = 100
 select = ["E", "F", "W"]
 
 [tool.uv.sources]
-dbt-duckdb = { git = "https://github.com/dumkydewilde/dbt-duckdb", branch = "microbatch-alternative" }
-# dbt-duckdb = { path = "/Users/your_name/code/dbt-duckdb/", package = true } # uv sync --reinstall-package dbt-duckdb  
+dbt-duckdb = { git = "https://github.com/duckdb/dbt-duckdb" }
