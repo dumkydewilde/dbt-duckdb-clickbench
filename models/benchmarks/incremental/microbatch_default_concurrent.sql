@@ -5,10 +5,10 @@
         concurrent_batches=true,
         event_time='event_time',
         batch_size='day',
-        lookback=0,
+        lookback=1,
         begin='2013-07-01',
         full_refresh=false
     )
 }}
 
-select * from {{ ref('stg_clickbench__hits') }}
+select * from {{ ref('stg_clickbench__hits') }} 
